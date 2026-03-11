@@ -1,26 +1,139 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
+/* ============================================================
+   ROOT VARIABLES
+============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --yellow: #F5A800;
+  --yellow-dark: #E09500;
+  --yellow-light: #FFC840;
+  --yellow-pale: #FFF8E7;
+  --teal: #1A6B72;
+  --teal-light: #2A8B94;
+  --bg: #F4F6F9;
+  --text: #1A1A2E;
+  --muted: #8A94A6;
+  --border: #E8ECF0;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-yellow: 0 6px 24px rgba(245,168,0,0.28);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --sidebar-w: 240px;
+  --header-h: 64px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  height: 100%;
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   ANIMATIONS
+============================================================ */
+@keyframes floatOwl {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; transform: scale(.95); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes appIn {
+  from { opacity: 0; transform: translateY(14px) scale(.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   VERY SMALL  < 360px  — keep splash legible
+============================================================ */
+@media (max-height: 600px) {
+  .splash-logo-ring { width: 52px !important; height: 52px !important; font-size: 22px !important; }
+  .splash-tagline   { font-size: 22px !important; }
+  .splash-desc      { display: none !important; }
+  .splash-foot      { gap: 8px !important; padding: 14px 24px 24px !important; }
+}
+
+/* ============================================================
+   TABLET  768px +
+============================================================ */
+@media (min-width: 768px) {
+  .mobile-header, .search-float-mob, .bottom-nav { display: none !important; }
+  .topbar     { display: flex !important; }
+  .main-wrap  { padding-top: calc(var(--header-h) + 20px) !important; padding-bottom: 20px !important; }
+  .content-area { padding: 0 24px !important; }
+  .app-grid   { grid-template-columns: repeat(6, 1fr) !important; gap: 14px !important; }
+  .app-icon-box { width: 66px !important; height: 66px !important; font-size: 31px !important; border-radius: 17px !important; }
+  .app-label  { font-size: 12px !important; }
+  .stats-row  { display: flex !important; }
+  .media-card { width: 124px !important; }
+  .media-thumb { height: 134px !important; }
+  .sec-title  { font-size: 17px !important; }
+  .modal-overlay { align-items: center !important; }
+  .modal-sheet   { border-radius: 22px !important; padding: 26px 30px 34px !important; }
+}
+
+/* ============================================================
+   DESKTOP  1024px +
+============================================================ */
+@media (min-width: 1024px) {
+  .sidebar    { display: flex !important; }
+  .topbar     { left: var(--sidebar-w) !important; }
+  .main-wrap  { margin-left: var(--sidebar-w) !important; padding-top: calc(var(--header-h) + 28px) !important; padding-bottom: 28px !important; }
+  .content-area { padding: 0 30px !important; max-width: 1200px !important; }
+  .app-grid   { grid-template-columns: repeat(8, 1fr) !important; gap: 16px !important; }
+  .app-icon-box { width: 70px !important; height: 70px !important; font-size: 33px !important; }
+  .stats-row  { gap: 16px !important; margin-bottom: 26px !important; }
+  .media-row  { flex-wrap: wrap !important; overflow: visible !important; }
+  .tb-brand   { display: none !important; }
+}
+
+/* ============================================================
+   WIDE  1280px +
+============================================================ */
+@media (min-width: 1280px) {
+  :root { --sidebar-w: 256px; }
+  .app-grid     { grid-template-columns: repeat(10, 1fr) !important; }
+  .content-area { padding: 0 40px !important; }
+}
+
+/* ============================================================
+   EDIT MODE — shake animation on app icons
+============================================================ */
+body.edit-mode .app-icon-box {
+  animation: wiggle .4s ease infinite alternate;
+}
+
+@keyframes wiggle {
+  from { transform: rotate(-2deg); }
+  to   { transform: rotate(2deg); }
+}
+
+body.edit-mode .app-item:hover .app-icon-box {
+  border: 2px solid #ef4444;
 }

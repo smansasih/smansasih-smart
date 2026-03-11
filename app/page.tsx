@@ -1,65 +1,237 @@
-import Image from "next/image";
+'use client';
 
+import { useState } from 'react';
+import { App, LogoStore } from '@/types';
+import { DEFAULT_APPS, LOGO_STORAGE_KEYS, APPS_STORAGE_KEY } from '@/lib/constants';
+import { useAuth, canEdit, canManage } from '@/hooks/useAuth';
+import { useUsers } from '@/hooks/useUsers';
+
+import { SplashScreen }  from '@/components/ui/SplashScreen';
+import { Dashboard }     from '@/components/ui/Dashboard';
+import { Sidebar }       from '@/components/layout/Sidebar';
+import { Topbar }        from '@/components/layout/Topbar';
+import { MobileLayout }  from '@/components/layout/MobileLayout';
+import { AddAppModal }   from '@/components/modals/AddAppModal';
+import { LogoutModal }   from '@/components/modals/LogoutModal';
+import { LoginModal }        from '@/components/modals/LoginModal';
+import { ImportUsersModal }  from '@/components/modals/ImportUsersModal';
+
+// ── helpers ──────────────────────────────────────────
+function loadApps(): App[] {
+  if (typeof window === 'undefined') return DEFAULT_APPS;
+  try {
+    const stored = localStorage.getItem(APPS_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : DEFAULT_APPS;
+  } catch { return DEFAULT_APPS; }
+}
+
+function saveApps(apps: App[]) {
+  if (typeof window !== 'undefined')
+    localStorage.setItem(APPS_STORAGE_KEY, JSON.stringify(apps));
+}
+
+function loadLogos(): LogoStore {
+  if (typeof window === 'undefined') return {};
+  const store: LogoStore = {};
+  (Object.entries(LOGO_STORAGE_KEYS) as [keyof LogoStore, string][]).forEach(([key, storageKey]) => {
+    const val = localStorage.getItem(storageKey);
+    if (val) store[key] = val;
+  });
+  return store;
+}
+
+function saveLogoToStorage(target: keyof LogoStore, data: string) {
+  if (typeof window !== 'undefined')
+    localStorage.setItem(LOGO_STORAGE_KEYS[target], data);
+}
+
+// ── Component ─────────────────────────────────────────
 export default function Home() {
+  // ── Screen state ──
+  const [screen, setScreen] = useState<'splash' | 'login' | 'app'>('splash');
+
+  // ── Users (dinamis, dari localStorage / import CSV) ──
+  const { users, importUsers } = useUsers();
+
+  // ── Auth ──
+  const { user, error: authError, loading: authLoading, login, logout, setError } = useAuth(users);
+
+  // ── App data ──
+  const [apps, setApps]           = useState<App[]>(() => loadApps());
+  const [logos, setLogos]         = useState<LogoStore>(() => loadLogos());
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // ── Modal state ──
+  const [showAddApp,  setShowAddApp]  = useState(false);
+  const [showLogout,  setShowLogout]  = useState(false);
+  const [showImport,  setShowImport]  = useState(false);
+  const [addAppCat,   setAddAppCat]   = useState('');
+
+  // ── Logo modal ──
+  const [logoModal, setLogoModal] = useState<{ open: boolean; target: keyof LogoStore }>({
+    open: false, target: 'splash-logo',
+  });
+
+  // ── Handlers ──────────────────────────────────────
+  function handleGetStarted() {
+    setScreen('login');
+  }
+
+  function handleLogin(username: string, password: string) {
+    const ok = login(username, password);
+    if (ok) setScreen('app');
+  }
+
+  function handleLogoutConfirm() {
+    logout();
+    setShowLogout(false);
+    setIsEditMode(false);
+    setScreen('splash');
+  }
+
+  function handleDeleteApp(id: number) {
+    const updated = apps.filter(a => a.id !== id);
+    setApps(updated);
+    saveApps(updated);
+  }
+
+  function handleAddApp(app: Omit<App, 'id'>) {
+    const updated = [...apps, { ...app, id: Date.now() }];
+    setApps(updated);
+    saveApps(updated);
+  }
+
+  function handleOpenImport() {
+    setShowImport(true);
+  }
+
+  function handleOpenAddApp(cat = '') {
+    setAddAppCat(cat);
+    setShowAddApp(true);
+  }
+
+  function handleLogoUpload(target: keyof LogoStore, data: string) {
+    setLogos(prev => ({ ...prev, [target]: data }));
+    saveLogoToStorage(target, data);
+  }
+
+  function openLogoModal(target: keyof LogoStore) {
+    setLogoModal({ open: true, target });
+  }
+
+  // ── Render ────────────────────────────────────────
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* ── SPLASH ── */}
+      {screen === 'splash' && (
+        <SplashScreen
+          logos={logos}
+          onStart={handleGetStarted}
+          onOpenLogoModal={openLogoModal}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      )}
+
+      {/* ── LOGIN MODAL (shown over splash bg) ── */}
+      {screen === 'login' && (
+        <>
+          {/* Blur background behind modal */}
+          <div style={{
+            position: 'fixed', inset: 0, zIndex: 9000,
+            background: 'linear-gradient(170deg, #f5f5f5 0%, #eaeaea 100%)',
+          }} />
+          <LoginModal
+            isOpen={true}
+            error={authError}
+            loading={authLoading}
+            onLogin={handleLogin}
+            onClearError={() => setError('')}
+          />
+        </>
+      )}
+
+      {/* ── MAIN APP ── */}
+      {screen === 'app' && user && (
+        <div style={{ minHeight: '100vh' }}>
+
+          {/* Sidebar — hanya tampil tombol Pengelolaan untuk admin */}
+          <Sidebar
+            logos={logos}
+            user={user}
+            canManage={canManage(user.role)}
+            onOpenAddApp={() => handleOpenAddApp()}
+            onOpenImport={handleOpenImport}
+            onToggleEditMode={() => setIsEditMode(v => !v)}
+            onOpenLogoModal={openLogoModal}
+            onLogout={() => setShowLogout(true)}
+          />
+
+          {/* Topbar — sembunyikan tombol tambah & edit untuk non-admin */}
+          <Topbar
+            logos={logos}
+            user={user}
+            canManage={canManage(user.role)}
+            onSearch={v => setSearchQuery(v.toLowerCase())}
+            onOpenAddApp={() => handleOpenAddApp()}
+            onToggleEditMode={() => setIsEditMode(v => !v)}
+            onOpenLogoModal={openLogoModal}
+            onLogout={() => setShowLogout(true)}
+          />
+
+          {/* Mobile header */}
+          <MobileLayout
+            logos={logos}
+            user={user}
+            canManage={canManage(user.role)}
+            searchQuery={searchQuery}
+            onSearch={v => setSearchQuery(v.toLowerCase())}
+            onOpenAddApp={() => handleOpenAddApp()}
+            onToggleEditMode={() => setIsEditMode(v => !v)}
+            onOpenLogoModal={openLogoModal}
+            onLogout={() => setShowLogout(true)}
+          />
+
+          {/* Dashboard */}
+          <div className="main-wrap">
+            <div className="content-area">
+              <Dashboard
+                apps={apps}
+                isEditMode={isEditMode && canEdit(user.role)}
+                searchQuery={searchQuery}
+                onDeleteApp={handleDeleteApp}
+                onOpenAddApp={canManage(user.role) ? handleOpenAddApp : () => {}}
+                canManage={canManage(user.role)}
+              />
+            </div>
+          </div>
+
+          {/* Add App Modal — hanya admin */}
+          {canManage(user.role) && (
+            <AddAppModal
+              isOpen={showAddApp}
+              defaultCat={addAppCat}
+              onClose={() => setShowAddApp(false)}
+              onAdd={handleAddApp}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
+
+          {/* Import Users Modal — hanya admin */}
+          {canManage(user.role) && (
+            <ImportUsersModal
+              isOpen={showImport}
+              onClose={() => setShowImport(false)}
+              onImport={importUsers}
+            />
+          )}
+
+          {/* Logout Modal */}
+          <LogoutModal
+            isOpen={showLogout}
+            onClose={() => setShowLogout(false)}
+            onConfirm={handleLogoutConfirm}
+          />
         </div>
-      </main>
-    </div>
+      )}
+    </>
   );
 }
