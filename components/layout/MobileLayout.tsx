@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LogoStore, AuthUser } from '@/types';
 import { getRoleLabel } from '@/hooks/useAuth';
 import { MobileDrawer } from '@/components/layout/Sidebar';
+import { type ActiveMenu } from '@/components/ui/Dashboard';
 
 interface MobileHeaderProps {
   logos: LogoStore;
@@ -156,6 +157,8 @@ interface MobileLayoutProps {
   onOpenAddApp: () => void;
   onOpenImport: () => void;
   onOpenAnnouncements: () => void;
+  onSetMenu: (menu: ActiveMenu) => void;
+  activeMenu: ActiveMenu;
   onToggleEditMode: () => void;
   onOpenLogoModal: (target: 'header-logo') => void;
   onLogout: () => void;
@@ -163,7 +166,7 @@ interface MobileLayoutProps {
 
 export function MobileLayout({
   logos, user, canManage, searchQuery,
-  onSearch, onOpenAddApp, onOpenImport, onOpenAnnouncements, onToggleEditMode, onOpenLogoModal, onLogout
+  onSearch, onOpenAddApp, onOpenImport, onOpenAnnouncements, onSetMenu, activeMenu, onToggleEditMode, onOpenLogoModal, onLogout
 }: MobileLayoutProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -217,6 +220,8 @@ export function MobileLayout({
         onOpenAddApp={onOpenAddApp}
         onOpenImport={onOpenImport}
         onOpenAnnouncements={onOpenAnnouncements}
+        onSetMenu={onSetMenu}
+        activeMenu={activeMenu}
         onToggleEditMode={onToggleEditMode}
         onLogout={onLogout}
       />

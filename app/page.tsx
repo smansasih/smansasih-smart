@@ -7,7 +7,7 @@ import { useAuth, canEdit, canManage } from '@/hooks/useAuth';
 import { useUsers } from '@/hooks/useUsers';
 
 import { SplashScreen }  from '@/components/ui/SplashScreen';
-import { Dashboard }     from '@/components/ui/Dashboard';
+import { Dashboard, type ActiveMenu } from '@/components/ui/Dashboard';
 import { Sidebar }       from '@/components/layout/Sidebar';
 import { Topbar }        from '@/components/layout/Topbar';
 import { MobileLayout }  from '@/components/layout/MobileLayout';
@@ -66,6 +66,7 @@ export default function Home() {
   const [logos, setLogos]         = useState<LogoStore>(() => loadLogos());
   const [isEditMode, setIsEditMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeMenu, setActiveMenu]   = useState<ActiveMenu>('beranda');
 
   // ── Modal state ──
   const [showAddApp,  setShowAddApp]  = useState(false);
@@ -172,6 +173,8 @@ export default function Home() {
             onOpenAddApp={() => handleOpenAddApp()}
             onOpenImport={handleOpenImport}
             onOpenAnnouncements={handleOpenAnnouncements}
+            onSetMenu={setActiveMenu}
+            activeMenu={activeMenu}
             onToggleEditMode={() => setIsEditMode(v => !v)}
             onOpenLogoModal={openLogoModal}
             onLogout={() => setShowLogout(true)}
@@ -199,6 +202,8 @@ export default function Home() {
             onOpenAddApp={() => handleOpenAddApp()}
             onOpenImport={handleOpenImport}
             onOpenAnnouncements={handleOpenAnnouncements}
+            onSetMenu={setActiveMenu}
+            activeMenu={activeMenu}
             onToggleEditMode={() => setIsEditMode(v => !v)}
             onOpenLogoModal={openLogoModal}
             onLogout={() => setShowLogout(true)}
@@ -209,6 +214,7 @@ export default function Home() {
             <div className="content-area">
               <Dashboard
                 apps={apps}
+                activeMenu={activeMenu}
                 userCount={users.length}
                 isEditMode={isEditMode && canEdit(user.role)}
                 searchQuery={searchQuery}

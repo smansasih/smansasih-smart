@@ -3,11 +3,14 @@
 import { App } from '@/types';
 import { MEDIA_ITEMS } from '@/lib/constants';
 
+export type ActiveMenu = 'beranda' | 'aplikasi' | 'media' | 'pengumuman';
+
 interface DashboardProps {
   apps: App[];
   userCount: number;
   announcementCount: number;
   onOpenAnnouncements: () => void;
+  activeMenu: ActiveMenu;
   isEditMode: boolean;
   searchQuery: string;
   canManage: boolean;
@@ -15,7 +18,7 @@ interface DashboardProps {
   onOpenAddApp: (cat?: string) => void;
 }
 
-export function Dashboard({ apps, userCount, announcementCount, onOpenAnnouncements, isEditMode, searchQuery, canManage, onDeleteApp, onOpenAddApp }: DashboardProps) {
+export function Dashboard({ apps, userCount, announcementCount, onOpenAnnouncements, activeMenu, isEditMode, searchQuery, canManage, onDeleteApp, onOpenAddApp }: DashboardProps) {
   const filtered = searchQuery
     ? apps.filter(a =>
         a.name.toLowerCase().includes(searchQuery) ||
@@ -55,6 +58,7 @@ export function Dashboard({ apps, userCount, announcementCount, onOpenAnnounceme
         ))}
       </div>
 
+      {/* Filter by activeMenu */}
       {/* No Results */}
       {showNoResults && (
         <div style={{
@@ -65,8 +69,8 @@ export function Dashboard({ apps, userCount, announcementCount, onOpenAnnounceme
         </div>
       )}
 
-      {/* App categories */}
-      {categories.map(cat => {
+      {/* App categories — tampil di beranda & aplikasi */}
+      {(activeMenu === 'beranda' || activeMenu === 'aplikasi') && categories.map(cat => {
         const list = searchQuery ? filtered.filter(a => a.cat === cat) : apps.filter(a => a.cat === cat);
         if (!list.length) return null;
 
@@ -163,8 +167,8 @@ export function Dashboard({ apps, userCount, announcementCount, onOpenAnnounceme
         );
       })}
 
-      {/* Media Sekolah (only when not searching) */}
-      {!searchQuery && (
+      {/* Media Sekolah — tampil di beranda & media */}
+      {(activeMenu === 'beranda' || activeMenu === 'media') && !searchQuery && (
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
             <span className="sec-title" style={{ fontSize: 15, fontWeight: 900, color: 'var(--text)' }}>Media Sekolah</span>
@@ -206,8 +210,45 @@ export function Dashboard({ apps, userCount, announcementCount, onOpenAnnounceme
         </div>
       )}
 
-      {/* Announcement */}
-      {!searchQuery && (
+      {/* Pengumuman view — tampil di menu Pengumuman */}
+      {activeMenu === 'pengumuman' && (
+        <div style={{ padding: '8px 0' }}>
+          <div style={{ fontSize: 15, fontWeight: 900, color: 'var(--text)', marginBottom: 16 }}>📢 Pengumuman Sekolah</div>
+          <div onClick={onOpenAnnouncements} style={{
+            background: 'linear-gradient(135deg, var(--yellow-pale) 0%, #fff 100%)',
+            border: '1.5px solid rgba(245,168,0,0.25)',
+            borderRadius: 'var(--radius)', padding: '16px 18px',
+            display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12,
+            cursor: 'pointer',
+          }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: 14, background: 'var(--yellow)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0,
+              position: 'relative',
+            }}>
+              📢
+              {announcementCount > 0 && (
+                <div style={{
+                  position: 'absolute', top: -4, right: -4, minWidth: 18, height: 18,
+                  borderRadius: 9, background: '#ef4444', color: '#fff', fontSize: 10,
+                  fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '0 4px', border: '2px solid #fff',
+                }}>{announcementCount}</div>
+              )}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', marginBottom: 3 }}>Lihat Semua Pengumuman</div>
+              <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600 }}>
+                {announcementCount > 0 ? `${announcementCount} pengumuman aktif` : 'Belum ada pengumuman'}
+              </div>
+            </div>
+            <span style={{ fontSize: 18, color: 'var(--muted)' }}>›</span>
+          </div>
+        </div>
+      )}
+
+      {/* Announcement — tampil di beranda */}
+      {activeMenu === 'beranda' && !searchQuery && (
         <div onClick={onOpenAnnouncements} style={{
           background: 'linear-gradient(135deg, var(--yellow-pale) 0%, #fff 100%)',
           border: '1.5px solid rgba(245,168,0,0.25)',

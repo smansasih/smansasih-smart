@@ -1,6 +1,7 @@
 'use client';
 
 import { LogoStore, AuthUser } from '@/types';
+import { type ActiveMenu } from '@/components/ui/Dashboard';
 import { getRoleLabel } from '@/hooks/useAuth';
 
 interface SidebarProps {
@@ -11,6 +12,8 @@ interface SidebarProps {
   onOpenAddApp: () => void;
   onOpenImport: () => void;
   onOpenAnnouncements: () => void;
+  onSetMenu: (menu: ActiveMenu) => void;
+  activeMenu: ActiveMenu;
   onToggleEditMode: () => void;
   onLogout: () => void;
 }
@@ -20,7 +23,7 @@ interface SidebarContentProps extends SidebarProps {
   onClose?: () => void;
 }
 
-function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp, onOpenImport, onOpenAnnouncements, onToggleEditMode, onLogout, onClose }: SidebarContentProps) {
+function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp, onOpenImport, onOpenAnnouncements, onSetMenu, activeMenu, onToggleEditMode, onLogout, onClose }: SidebarContentProps) {
   return (
     <>
       {/* Header logo */}
@@ -55,26 +58,29 @@ function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp,
       {/* Nav */}
       <nav style={{ flex: 1, overflowY: 'auto', padding: 12, scrollbarWidth: 'none' }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 1, padding: '8px 10px 4px' }}>Menu Utama</div>
-        {[
-          { icon: '🏠', label: 'Beranda', onClick: undefined as (() => void) | undefined },
-          { icon: '🧭', label: 'Jelajahi', onClick: undefined as (() => void) | undefined },
-          { icon: '📢', label: 'Pengumuman', onClick: () => { onOpenAnnouncements(); onClose?.(); } },
-          { icon: '🌐', label: 'Media Sekolah', onClick: undefined as (() => void) | undefined },
-        ].map((item, i) => (
-          <a key={item.label}
-            onClick={item.onClick ?? onClose}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '10px 12px', borderRadius: 12, cursor: 'pointer',
-              fontSize: 13, fontWeight: 700,
-              color: i === 0 ? 'var(--text)' : 'var(--muted)',
-              background: i === 0 ? 'var(--yellow-pale)' : 'transparent',
-              transition: 'all .2s', textDecoration: 'none', marginBottom: 2,
-            }}>
-            <span style={{ fontSize: 16, width: 20, textAlign: 'center' }}>{item.icon}</span>
-            {item.label}
-          </a>
-        ))}
+        {([
+          { icon: '🏠', label: 'Beranda',          menu: 'beranda'    as ActiveMenu },
+          { icon: '🖥️', label: 'Aplikasi Sekolah', menu: 'aplikasi'   as ActiveMenu },
+          { icon: '🌐', label: 'Media Sekolah',     menu: 'media'      as ActiveMenu },
+          { icon: '📢', label: 'Pengumuman',        menu: 'pengumuman' as ActiveMenu },
+        ] as { icon: string; label: string; menu: ActiveMenu }[]).map((item) => {
+          const isActive = activeMenu === item.menu;
+          return (
+            <a key={item.label}
+              onClick={() => { onSetMenu(item.menu); onClose?.(); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '10px 12px', borderRadius: 12, cursor: 'pointer',
+                fontSize: 13, fontWeight: 700,
+                color: isActive ? 'var(--text)' : 'var(--muted)',
+                background: isActive ? 'var(--yellow-pale)' : 'transparent',
+                transition: 'all .2s', textDecoration: 'none', marginBottom: 2,
+              }}>
+              <span style={{ fontSize: 16, width: 20, textAlign: 'center' }}>{item.icon}</span>
+              {item.label}
+            </a>
+          );
+        })}
 
         {canManage && (<>
           <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 1, padding: '8px 10px 4px', marginTop: 10 }}>Pengelolaan</div>
