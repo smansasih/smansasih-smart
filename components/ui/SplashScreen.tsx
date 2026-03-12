@@ -114,6 +114,45 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
           filter: drop-shadow(0 20px 40px rgba(0,0,0,.18));
         }
 
+        .sp-mascot-wrap {
+          position: relative;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          flex: 1 1 0;
+          min-height: 0;
+          width: 100%;
+          overflow: hidden;
+          padding-top: clamp(6px, 1.5vh, 16px);
+          padding-bottom: clamp(20px, 4vh, 40px);
+        }
+
+        .sp-mascot-wrap::after {
+          content: '';
+          position: absolute;
+          top: -60%;
+          left: -60%;
+          width: 60%;
+          height: 200%;
+          background: linear-gradient(
+            105deg,
+            transparent 30%,
+            rgba(255,255,255,0.0) 40%,
+            rgba(255,255,255,0.55) 50%,
+            rgba(255,255,255,0.0) 60%,
+            transparent 70%
+          );
+          transform: skewX(-15deg);
+          animation: shimmerMascot 2.2s ease-out .4s both;
+          pointer-events: none;
+          z-index: 10;
+        }
+
+        @keyframes shimmerMascot {
+          0%   { left: -60%; opacity: 1; }
+          100% { left: 160%; opacity: 1; }
+        }
+
         .sp-dots { display: flex; align-items: center; gap: 7px; }
         .sp-dot  {
           width: 8px; height: 8px; border-radius: 50%;
@@ -251,16 +290,7 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
           </div>
 
           {/* Mascot */}
-          <div
-            className="sp-mascot"
-            style={{
-              flex: '1 1 0', minHeight: 0,
-              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-              width: '100%',
-              paddingTop: 'clamp(6px, 1.5vh, 16px)',
-              paddingBottom: 'clamp(20px, 4vh, 40px)',
-            }}
-          >
+          <div className="sp-mascot sp-mascot-wrap">
             {logos['mascot'] ? (
               <img src={logos['mascot']} className="sp-mascot-img" alt="mascot" />
             ) : (

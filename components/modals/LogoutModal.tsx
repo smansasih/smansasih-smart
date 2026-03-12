@@ -10,6 +10,39 @@ export function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
   if (!isOpen) return null;
 
   return (
+    <>
+    <style>{`
+      .logout-img-wrap {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        border-radius: 12px;
+      }
+      .logout-img-wrap::after {
+        content: '';
+        position: absolute;
+        top: -60%;
+        left: -60%;
+        width: 55%;
+        height: 200%;
+        background: linear-gradient(
+          105deg,
+          transparent 30%,
+          rgba(255,255,255,0.0) 40%,
+          rgba(255,255,255,0.6) 50%,
+          rgba(255,255,255,0.0) 60%,
+          transparent 70%
+        );
+        transform: skewX(-15deg);
+        animation: shimmerLogout 2s ease-out .2s both;
+        pointer-events: none;
+        z-index: 10;
+      }
+      @keyframes shimmerLogout {
+        0%   { left: -60%; opacity: 1; }
+        100% { left: 160%; opacity: 1; }
+      }
+    `}</style>
     <div style={{
       display: 'flex', position: 'fixed', inset: 0,
       background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)',
@@ -21,7 +54,9 @@ export function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
         animation: 'popIn .25s cubic-bezier(.4,0,.2,1)',
         boxShadow: '0 20px 60px rgba(0,0,0,.2)',
       }}>
-        <img src="/logo_keluar.png" style={{ width: 'min(60vw, 280px)', height: 'min(60vw, 280px)', objectFit: 'contain', marginBottom: 12 }} alt="keluar" />
+        <div className="logout-img-wrap" style={{ marginBottom: 12 }}>
+          <img src="/logo_keluar.png" style={{ width: 'min(60vw, 280px)', height: 'min(60vw, 280px)', objectFit: 'contain', display: 'block' }} alt="keluar" />
+        </div>
         <h3 style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', marginBottom: 24 }}>Keluar dari Aplikasi?</h3>
         <div style={{ display: 'flex', gap: 10 }}>
           <button onClick={onClose} style={{
@@ -42,5 +77,6 @@ export function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }
