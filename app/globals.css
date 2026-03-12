@@ -149,3 +149,42 @@ body.edit-mode .app-icon-box {
 body.edit-mode .app-item:hover .app-icon-box {
   border: 2px solid #ef4444;
 }
+/* ============================================================
+   DARK MODE
+============================================================ */
+body.dark {
+  --bg: #0F1117;
+  --text: #E8EAF0;
+  --muted: #6B7280;
+  --border: #2A2D36;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --yellow-pale: #2A2200;
+  --teal: #2A9BA4;
+  --teal-light: #3ABBC6;
+  background: #0F1117;
+  color: #E8EAF0;
+}
+
+body.dark .sidebar,
+body.dark .topbar,
+body.dark .bottom-nav {
+  background: #1A1D27 !important;
+  border-color: #2A2D36 !important;
+}
+
+body.dark .mobile-header {
+  background: linear-gradient(135deg, #0D4A50 0%, #1A6B72 100%) !important;
+}
+
+body.dark .search-float-mob,
+body.dark [style*="background: #fff"],
+body.dark [style*="background:#fff"] {
+  background: #1A1D27 !important;
+  color: #E8EAF0 !important;
+}
+
+body.dark input,
+body.dark textarea {
+  background: #1A1D27 !important;
+  color: #E8EAF0 !important;
+}
