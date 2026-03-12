@@ -103,7 +103,7 @@ interface BottomNavProps {
 }
 
 export function BottomNav({ onOpenAddApp, canManage, onOpenDrawer }: BottomNavProps) {
-  const WA_URL = "https://wa.me/6285258607252?text=Halo%21%20Selamat%20datang%20di%20layanan%20asisten%20virtual%20SMANSASIH%20SMART%20Aplikasi%20Edukasi%20Terintegrasi%20SMA%20Negeri%201%20Sumberasih.%20Silakan%20sampaikan%20pertanyaan%20untuk%20mendapatkan%20informasi%20dari%20kami.%20Terima%20Kasih";
+  const WA_URL = "https://wa.me/6285258607252?text=Halo%21%20Selamat%20datang%20di%20layanan%20asisten%20virtual%20SMANSASIH%20SMART%2C%20Aplikasi%20Edukasi%20Terintegrasi%20SMA%20Negeri%201%20Sumberasih.%20Silakan%20sampaikan%20pertanyaan%20untuk%20mendapatkan%20informasi%20dari%20kami%20dengan%20mengirimkan%20pesan%20ini.%20Terima%20Kasih.";
   const items = [
     { icon: '🏠', label: 'Home', onClick: undefined, isHome: true },
     { icon: '☰', label: 'Menu', onClick: onOpenDrawer, isMenu: true },
@@ -140,12 +140,7 @@ export function BottomNav({ onOpenAddApp, canManage, onOpenDrawer }: BottomNavPr
             color: item.isAdd ? 'var(--yellow-dark)' : 'inherit',
           }}>
             {item.isWa ? (
-              <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="32" cy="28" r="14" fill="currentColor" opacity="0.15"/>
-                <path d="M32 10C21.0 10 12 19.0 12 30c0 3.8 1.1 7.3 2.9 10.3L12 52l12-2.8c2.9 1.6 6.2 2.5 9.7 2.5 11 0 20-9 20-20S43 10 32 10z" fill="currentColor" opacity="0.9"/>
-                <path d="M40 34.5c-.5-.2-2.8-1.4-3.2-1.5-.4-.2-.7-.2-1 .2-.3.4-1.2 1.5-1.5 1.8-.3.3-.5.4-1 .1-2.6-1.3-4.3-2.3-6-5.2-.5-.8.5-.7 1.3-2.4.1-.3 0-.6-.1-.8-.1-.2-1-2.5-1.4-3.4-.4-.9-.8-.8-1-.8h-.9c-.3 0-.8.1-1.2.6-.4.5-1.6 1.6-1.6 3.8s1.7 4.4 1.9 4.7c.2.3 3.3 5 7.9 7 4.7 1.9 4.7 1.3 5.5 1.2.8-.1 2.8-1.1 3.2-2.2.4-1.1.4-2 .3-2.2-.1-.2-.4-.3-.9-.5z" fill="white"/>
-                <path d="M14 50l1.5-5.5A18 18 0 0132 10c10 0 18 8 18 18s-8 18-18 18a18 18 0 01-9-2.4L14 50z" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3"/>
-              </svg>
+              <img src="/icon_admin.png" style={{ width: 24, height: 24, objectFit: 'contain' }} alt="admin" />
             ) : item.icon}
           </div>
           <div style={{ fontSize: 10, fontWeight: 700 }}>{item.label}</div>
