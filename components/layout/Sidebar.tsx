@@ -10,6 +10,7 @@ interface SidebarProps {
   onOpenLogoModal: (target: 'header-logo') => void;
   onOpenAddApp: () => void;
   onOpenImport: () => void;
+  onOpenAnnouncements: () => void;
   onToggleEditMode: () => void;
   onLogout: () => void;
 }
@@ -19,7 +20,7 @@ interface SidebarContentProps extends SidebarProps {
   onClose?: () => void;
 }
 
-function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp, onOpenImport, onToggleEditMode, onLogout, onClose }: SidebarContentProps) {
+function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp, onOpenImport, onOpenAnnouncements, onToggleEditMode, onLogout, onClose }: SidebarContentProps) {
   return (
     <>
       {/* Header logo */}
@@ -30,8 +31,8 @@ function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp,
             title="Klik untuk ganti logo"
           >
             {logos['header-logo']
-              ? <img src={logos['header-logo']} style={{ width: 36, height: 36, borderRadius: 10, objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo" />
-              : <span style={{ fontSize: 26 }}>🦅</span>
+              ? <img src={logos['header-logo']} style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo" />
+              : <img src="/logo.png" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo sekolah" />
             }
           </div>
           <div style={{ flex: 1 }}>
@@ -55,13 +56,13 @@ function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp,
       <nav style={{ flex: 1, overflowY: 'auto', padding: 12, scrollbarWidth: 'none' }}>
         <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: 1, padding: '8px 10px 4px' }}>Menu Utama</div>
         {[
-          { icon: '🏠', label: 'Beranda' },
-          { icon: '🧭', label: 'Jelajahi' },
-          { icon: '📢', label: 'Pengumuman' },
-          { icon: '🌐', label: 'Media Sekolah' },
+          { icon: '🏠', label: 'Beranda', onClick: undefined as (() => void) | undefined },
+          { icon: '🧭', label: 'Jelajahi', onClick: undefined as (() => void) | undefined },
+          { icon: '📢', label: 'Pengumuman', onClick: () => { onOpenAnnouncements(); onClose?.(); } },
+          { icon: '🌐', label: 'Media Sekolah', onClick: undefined as (() => void) | undefined },
         ].map((item, i) => (
           <a key={item.label}
-            onClick={onClose}
+            onClick={item.onClick ?? onClose}
             style={{
               display: 'flex', alignItems: 'center', gap: 10,
               padding: '10px 12px', borderRadius: 12, cursor: 'pointer',
@@ -105,9 +106,11 @@ function SidebarContent({ logos, user, canManage, onOpenLogoModal, onOpenAddApp,
         <button onClick={onLogout} title="Keluar" style={{
           width: 34, height: 34, borderRadius: 10,
           background: 'rgba(239,68,68,0.1)', border: '1.5px solid rgba(239,68,68,0.2)',
-          color: '#ef4444', fontSize: 16, cursor: 'pointer',
+          cursor: 'pointer', padding: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>🚪</button>
+        }}>
+          <img src="/icon_logout.png" style={{ width: 20, height: 20, objectFit: 'contain' }} alt="logout" />
+        </button>
       </div>
     </>
   );

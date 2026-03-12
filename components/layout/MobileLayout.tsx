@@ -26,33 +26,48 @@ export function MobileHeader({ logos, user, canManage, onOpenLogoModal, onToggle
       <div style={{ position: 'absolute', top: -40, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }} />
       <div style={{ position: 'absolute', top: 20, right: 40, width: 60, height: 60, borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }} />
 
-      {/* Top row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 16 }}>
-        {/* Hamburger + user info */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {/* Hamburger button */}
-          <button onClick={onOpenDrawer} style={{
-            width: 38, height: 38, background: 'rgba(255,255,255,0.2)',
-            borderRadius: 11, display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center', gap: 5,
-            cursor: 'pointer', border: 'none', padding: '9px 8px', flexShrink: 0,
-          }}>
-            <span style={{ display: 'block', width: 18, height: 2, background: '#fff', borderRadius: 2 }} />
-            <span style={{ display: 'block', width: 14, height: 2, background: 'rgba(255,255,255,0.7)', borderRadius: 2 }} />
-            <span style={{ display: 'block', width: 18, height: 2, background: '#fff', borderRadius: 2 }} />
-          </button>
+      {/* Baris 1: Hamburger KIRI + Brand */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 16 }}>
+        {/* Hamburger button — pojok kiri */}
+        <button onClick={onOpenDrawer} style={{
+          width: 38, height: 38, background: 'rgba(255,255,255,0.2)',
+          borderRadius: 11, display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', gap: 5,
+          cursor: 'pointer', border: 'none', padding: '9px 8px', flexShrink: 0,
+        }}>
+          <span style={{ display: 'block', width: 18, height: 2, background: '#fff', borderRadius: 2 }} />
+          <span style={{ display: 'block', width: 14, height: 2, background: 'rgba(255,255,255,0.7)', borderRadius: 2 }} />
+          <span style={{ display: 'block', width: 18, height: 2, background: '#fff', borderRadius: 2 }} />
+        </button>
 
-          {/* Avatar + nama */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{user.avatar}</div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>Hello {user.name},</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>{getRoleLabel(user.role)}</div>
+        {/* Brand: logo + nama aplikasi */}
+        <div
+          onClick={() => onOpenLogoModal('header-logo')}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flex: 1 }}
+        >
+          {logos['header-logo']
+            ? <img src={logos['header-logo']} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.7)' }} alt="logo" />
+            : <img src="/logo.png" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.7)' }} alt="logo sekolah" />
+          }
+          <div>
+            <div style={{ fontSize: 17, fontWeight: 900, color: '#fff' }}>
+              SMANSASIH <span style={{ background: 'var(--yellow)', color: 'var(--teal)', padding: '1px 7px', borderRadius: 7, fontSize: 12 }}>SMART</span>
             </div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '.8px', textTransform: 'uppercase' }}>Aplikasi Edukasi Terintegrasi</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Baris 2: Avatar + nama pengguna + action buttons */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{user.avatar}</div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>Hello, {user.name}</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>{getRoleLabel(user.role)}</div>
           </div>
         </div>
 
-        {/* Action buttons */}
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={onToggleEditMode} style={{
             position: 'relative', width: 38, height: 38, background: 'rgba(255,255,255,0.2)',
@@ -70,25 +85,10 @@ export function MobileHeader({ logos, user, canManage, onOpenLogoModal, onToggle
           <button onClick={onLogout} style={{
             width: 38, height: 38, background: 'rgba(255,255,255,0.25)',
             borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 18, cursor: 'pointer', border: 'none', backdropFilter: 'blur(6px)',
-          }}>🚪</button>
-        </div>
-      </div>
-
-      {/* Brand */}
-      <div
-        onClick={() => onOpenLogoModal('header-logo')}
-        style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', marginTop: 16 }}
-      >
-        {logos['header-logo']
-          ? <img src={logos['header-logo']} style={{ width: 36, height: 36, borderRadius: 10, objectFit: 'cover', border: '2px solid rgba(255,255,255,0.7)' }} alt="logo" />
-          : <span style={{ fontSize: 24 }}>🦅</span>
-        }
-        <div>
-          <div style={{ fontSize: 17, fontWeight: 900, color: '#fff' }}>
-            SMANSASIH <span style={{ background: 'var(--yellow)', color: 'var(--teal)', padding: '1px 7px', borderRadius: 7, fontSize: 12 }}>SMART</span>
-          </div>
-          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '.8px', textTransform: 'uppercase' }}>Aplikasi Edukasi Terintegrasi</div>
+            cursor: 'pointer', border: 'none', backdropFilter: 'blur(6px)', padding: 0,
+          }}>
+            <img src="/icon_logout.png" style={{ width: 22, height: 22, objectFit: 'contain' }} alt="logout" />
+          </button>
         </div>
       </div>
     </div>
@@ -154,6 +154,8 @@ interface MobileLayoutProps {
   searchQuery: string;
   onSearch: (val: string) => void;
   onOpenAddApp: () => void;
+  onOpenImport: () => void;
+  onOpenAnnouncements: () => void;
   onToggleEditMode: () => void;
   onOpenLogoModal: (target: 'header-logo') => void;
   onLogout: () => void;
@@ -161,7 +163,7 @@ interface MobileLayoutProps {
 
 export function MobileLayout({
   logos, user, canManage, searchQuery,
-  onSearch, onOpenAddApp, onToggleEditMode, onOpenLogoModal, onLogout
+  onSearch, onOpenAddApp, onOpenImport, onOpenAnnouncements, onToggleEditMode, onOpenLogoModal, onLogout
 }: MobileLayoutProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -213,6 +215,8 @@ export function MobileLayout({
         canManage={canManage}
         onOpenLogoModal={onOpenLogoModal}
         onOpenAddApp={onOpenAddApp}
+        onOpenImport={onOpenImport}
+        onOpenAnnouncements={onOpenAnnouncements}
         onToggleEditMode={onToggleEditMode}
         onLogout={onLogout}
       />

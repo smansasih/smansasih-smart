@@ -32,8 +32,8 @@ export function Topbar({ logos, user, canManage, onSearch, onOpenAddApp, onToggl
           title="Klik untuk ganti logo"
         >
           {logos['header-logo']
-            ? <img src={logos['header-logo']} style={{ width: 32, height: 32, borderRadius: 8, objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo" />
-            : <span style={{ fontSize: 22 }}>🦅</span>
+            ? <img src={logos['header-logo']} style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo" />
+            : <img src="/logo.png" style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--yellow)' }} alt="logo sekolah" />
           }
           <div className="tb-brand" style={{ fontSize: 15, fontWeight: 900, color: 'var(--text)', whiteSpace: 'nowrap' }}>
             SMANSASIH <span style={{ background: 'var(--teal)', color: 'var(--yellow)', padding: '1px 7px', borderRadius: 7, fontSize: 12, verticalAlign: 'middle' }}>SMART</span>
@@ -95,13 +95,14 @@ export function Topbar({ logos, user, canManage, onSearch, onOpenAddApp, onToggl
           </div>
         </div>
 
-        <button onClick={onLogout} style={{
-          background: 'rgba(239,68,68,0.08)', color: '#ef4444',
-          fontFamily: 'Nunito,sans-serif', fontSize: 13, fontWeight: 800,
+        <button onClick={onLogout} title="Keluar" style={{
+          width: 38, height: 38, background: 'rgba(239,68,68,0.08)',
           border: '1.5px solid rgba(239,68,68,0.2)', borderRadius: 10,
-          padding: '7px 14px', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: 5,
-        }}>🚪 Keluar</button>
+          cursor: 'pointer', padding: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <img src="/icon_logout.png" style={{ width: 20, height: 20, objectFit: 'contain' }} alt="logout" />
+        </button>
       </div>
     </header>
   );

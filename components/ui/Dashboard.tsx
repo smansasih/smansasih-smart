@@ -5,6 +5,9 @@ import { MEDIA_ITEMS } from '@/lib/constants';
 
 interface DashboardProps {
   apps: App[];
+  userCount: number;
+  announcementCount: number;
+  onOpenAnnouncements: () => void;
   isEditMode: boolean;
   searchQuery: string;
   canManage: boolean;
@@ -12,7 +15,7 @@ interface DashboardProps {
   onOpenAddApp: (cat?: string) => void;
 }
 
-export function Dashboard({ apps, isEditMode, searchQuery, canManage, onDeleteApp, onOpenAddApp }: DashboardProps) {
+export function Dashboard({ apps, userCount, announcementCount, onOpenAnnouncements, isEditMode, searchQuery, canManage, onDeleteApp, onOpenAddApp }: DashboardProps) {
   const filtered = searchQuery
     ? apps.filter(a =>
         a.name.toLowerCase().includes(searchQuery) ||
@@ -31,7 +34,7 @@ export function Dashboard({ apps, isEditMode, searchQuery, canManage, onDeleteAp
       }}>
         {[
           { icon: '📱', iconBg: 'var(--yellow-pale)', num: apps.length, label: 'Total Aplikasi' },
-          { icon: '👥', iconBg: 'rgba(26,107,114,.1)', num: 487, label: 'Pengguna Aktif' },
+          { icon: '👥', iconBg: 'rgba(26,107,114,.1)', num: userCount, label: 'Pengguna Aktif' },
           { icon: '📂', iconBg: '#fff0f0', num: new Set(apps.map(a => a.cat)).size, label: 'Kategori' },
           { icon: '🌐', iconBg: '#f0f4ff', num: 4, label: 'Media Sekolah' },
         ].map((s, i) => (
@@ -205,20 +208,35 @@ export function Dashboard({ apps, isEditMode, searchQuery, canManage, onDeleteAp
 
       {/* Announcement */}
       {!searchQuery && (
-        <div style={{
+        <div onClick={onOpenAnnouncements} style={{
           background: 'linear-gradient(135deg, var(--yellow-pale) 0%, #fff 100%)',
           border: '1.5px solid rgba(245,168,0,0.25)',
           borderRadius: 'var(--radius)', padding: '16px 18px',
           display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28,
+          cursor: 'pointer', transition: 'box-shadow .2s',
         }}>
           <div style={{
             width: 48, height: 48, borderRadius: 14, background: 'var(--yellow)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0,
-          }}>📢</div>
-          <div>
-            <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', marginBottom: 3 }}>Pengumuman Sekolah</div>
-            <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600 }}>Jadwal ujian semester &amp; kegiatan terbaru</div>
+            position: 'relative',
+          }}>
+            📢
+            {announcementCount > 0 && (
+              <div style={{
+                position: 'absolute', top: -4, right: -4, minWidth: 18, height: 18,
+                borderRadius: 9, background: '#ef4444', color: '#fff', fontSize: 10,
+                fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '0 4px', border: '2px solid #fff',
+              }}>{announcementCount}</div>
+            )}
           </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 900, color: 'var(--text)', marginBottom: 3 }}>Pengumuman Sekolah</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600 }}>
+              {announcementCount > 0 ? `${announcementCount} pengumuman aktif` : 'Belum ada pengumuman'}
+            </div>
+          </div>
+          <span style={{ fontSize: 18, color: 'var(--muted)' }}>›</span>
         </div>
       )}
     </div>

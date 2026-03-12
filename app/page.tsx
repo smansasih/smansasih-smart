@@ -14,7 +14,9 @@ import { MobileLayout }  from '@/components/layout/MobileLayout';
 import { AddAppModal }   from '@/components/modals/AddAppModal';
 import { LogoutModal }   from '@/components/modals/LogoutModal';
 import { LoginModal }        from '@/components/modals/LoginModal';
-import { ImportUsersModal }  from '@/components/modals/ImportUsersModal';
+import { ImportUsersModal }      from '@/components/modals/ImportUsersModal';
+import { AnnouncementsModal }    from '@/components/modals/AnnouncementsModal';
+import { useAnnouncements }      from '@/hooks/useAnnouncements';
 
 // ── helpers ──────────────────────────────────────────
 function loadApps(): App[] {
@@ -53,6 +55,9 @@ export default function Home() {
   // ── Users (dinamis, dari localStorage / import CSV) ──
   const { users, importUsers } = useUsers();
 
+  // ── Announcements ──
+  const { announcements, addAnnouncement, updateAnnouncement, deleteAnnouncement } = useAnnouncements();
+
   // ── Auth ──
   const { user, error: authError, loading: authLoading, login, logout, setError } = useAuth(users);
 
@@ -65,7 +70,8 @@ export default function Home() {
   // ── Modal state ──
   const [showAddApp,  setShowAddApp]  = useState(false);
   const [showLogout,  setShowLogout]  = useState(false);
-  const [showImport,  setShowImport]  = useState(false);
+  const [showImport,        setShowImport]        = useState(false);
+  const [showAnnouncements, setShowAnnouncements] = useState(false);
   const [addAppCat,   setAddAppCat]   = useState('');
 
   // ── Logo modal ──
@@ -104,6 +110,10 @@ export default function Home() {
 
   function handleOpenImport() {
     setShowImport(true);
+  }
+
+  function handleOpenAnnouncements() {
+    setShowAnnouncements(true);
   }
 
   function handleOpenAddApp(cat = '') {
@@ -161,6 +171,7 @@ export default function Home() {
             canManage={canManage(user.role)}
             onOpenAddApp={() => handleOpenAddApp()}
             onOpenImport={handleOpenImport}
+            onOpenAnnouncements={handleOpenAnnouncements}
             onToggleEditMode={() => setIsEditMode(v => !v)}
             onOpenLogoModal={openLogoModal}
             onLogout={() => setShowLogout(true)}
@@ -186,6 +197,8 @@ export default function Home() {
             searchQuery={searchQuery}
             onSearch={v => setSearchQuery(v.toLowerCase())}
             onOpenAddApp={() => handleOpenAddApp()}
+            onOpenImport={handleOpenImport}
+            onOpenAnnouncements={handleOpenAnnouncements}
             onToggleEditMode={() => setIsEditMode(v => !v)}
             onOpenLogoModal={openLogoModal}
             onLogout={() => setShowLogout(true)}
@@ -196,11 +209,14 @@ export default function Home() {
             <div className="content-area">
               <Dashboard
                 apps={apps}
+                userCount={users.length}
                 isEditMode={isEditMode && canEdit(user.role)}
                 searchQuery={searchQuery}
                 onDeleteApp={handleDeleteApp}
                 onOpenAddApp={canManage(user.role) ? handleOpenAddApp : () => {}}
                 canManage={canManage(user.role)}
+                announcementCount={announcements.length}
+                onOpenAnnouncements={handleOpenAnnouncements}
               />
             </div>
           </div>
@@ -214,6 +230,17 @@ export default function Home() {
               onAdd={handleAddApp}
             />
           )}
+
+          {/* Announcements Modal */}
+          <AnnouncementsModal
+            isOpen={showAnnouncements}
+            onClose={() => setShowAnnouncements(false)}
+            announcements={announcements}
+            canManage={canManage(user.role)}
+            onAdd={addAnnouncement}
+            onUpdate={updateAnnouncement}
+            onDelete={deleteAnnouncement}
+          />
 
           {/* Import Users Modal — hanya admin */}
           {canManage(user.role) && (

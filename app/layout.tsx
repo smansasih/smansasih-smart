@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "SMANSASIH SMART",
   description: "Portal Aplikasi SMA Negeri 1 Sumberasih",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.png",
   },
 };
 

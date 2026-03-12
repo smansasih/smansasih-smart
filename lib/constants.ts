@@ -1,15 +1,15 @@
 import { App, MediaItem, UserAccount } from '@/types';
 
 export const DEFAULT_APPS: App[] = [
-  { id: 1,  name: 'Presensi',   url: '#',                                         icon: '/logo_presensi.png',    iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 1,  name: 'Presensi',   url: 'https://s.id/absendigital-smansasih/',       icon: '/logo_presensi.png',    iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 2,  name: 'Peduli',     url: 'https://pedulismansasih.com/',               icon: '/logo_peduli.png',      iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 3,  name: 'Angajih',    url: 'https://angajih-smansasih.vercel.app/',      icon: '/logo_angajih.png',     iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 4,  name: 'Gelis',      url: 'https://gelis-smansasih.vercel.app/',        icon: '/logo_gelis.png',       iconType: 'image', cat: 'Aplikasi Sekolah' },
-  { id: 5,  name: 'Kantin',     url: '',                                           icon: '/logo_kantin.png',      iconType: 'image', cat: 'Aplikasi Sekolah' },
-  { id: 6,  name: 'Pantau',     url: '#',                                          icon: '/logo_pantau.png',      iconType: 'image', cat: 'Aplikasi Sekolah' },
-  { id: 7,  name: 'Kopsis',     url: '#',                                          icon: '/logo_kopsis.png',      iconType: 'image', cat: 'Aplikasi Sekolah' },
-  { id: 8,  name: 'Artificial', url: '#',                                          icon: '/logo_artificial.png',  iconType: 'image', cat: 'Aplikasi Sekolah' },
-  { id: 9,  name: 'Asisten',    url: '#',                                          icon: '/logo_asisten.png',     iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 5,  name: 'Ramadhan',   url: 'https://s.id/smansasih_ramadhan/',           icon: '/logo_ramadhan.png',    iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 6,  name: 'Arsip',      url: '#',                                          icon: '/logo_arsip.png',       iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 7,  name: 'Kantin',     url: '#',                                          icon: '/logo_kantin.png',      iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 8,  name: 'Artificial', url: 'https://ai-smansasih.vercel.app/',           icon: '/logo_artificial.png',  iconType: 'image', cat: 'Aplikasi Sekolah' },
+  { id: 9,  name: 'Asisten',    url: 'https://asistenguru-smansasih.vercel.app/',  icon: '/logo_asisten.png',     iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 10, name: 'Manajemen',  url: '#',                                          icon: '/logo_manajemen.png',   iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 11, name: 'Sispena',    url: 'https://sispena-smansasih.vercel.app/',      icon: '/logo_sispena.png',     iconType: 'image', cat: 'Aplikasi Sekolah' },
   { id: 12, name: 'Kunjungan',  url: 'https://bkd-smansasih.vercel.app/',          icon: '/logo_kunjungan.png',   iconType: 'image', cat: 'Aplikasi Sekolah' },
@@ -19,7 +19,7 @@ export const MEDIA_ITEMS: MediaItem[] = [
   { name: 'Website',   icon: '🌐', logo: '/logo_website.png',   url: 'https://sman1sumberasih.sch.id/',               desc: 'SMA Negeri 1 Sumberasih' },
   { name: 'Youtube',   icon: '▶️', logo: '/logo_youtube.png',   url: 'https://www.youtube.com/@smanegeri1sumberasih', desc: 'Channel Resmi' },
   { name: 'Instagram', icon: '📸', logo: '/logo_instagram.png', url: 'https://www.instagram.com/smansasih_jaya/',     desc: '@smansasih' },
-  { name: 'TikTok',    icon: '🎵', logo: '/logo_tiktok.png',    url: '#',                                              desc: '@smansasih' },
+  { name: 'TikTok',    icon: '🎵', logo: '/logo_tiktok.png',    url: 'https://www.tiktok.com/@osis_smansasih',                                              desc: '@smansasih' },
 ];
 
 export const EMOJIS = [
