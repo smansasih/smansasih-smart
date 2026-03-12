@@ -15,15 +15,15 @@ export interface Announcement {
 const DEFAULT_ANNOUNCEMENTS: Announcement[] = [
   {
     id: 1,
-    title: 'Jadwal Ujian Semester Genap 2024/2025',
-    body: 'Ujian Akhir Semester Genap akan dilaksanakan pada tanggal 10–20 Juni 2025. Seluruh siswa diharapkan mempersiapkan diri dengan baik. Jadwal lengkap tersedia di papan pengumuman sekolah.',
+    title: 'Jadwal PSAJ Tahun Pelajaran 2025/2026',
+    body: 'Ujian Penilaian Sumatif Akhir Jenjang akan dilaksanakan pada bulan April 2026. Seluruh siswa diharapkan mempersiapkan diri dengan baik. Jadwal lengkap tersedia di papan pengumuman sekolah.',
     date: new Date().toISOString(),
     pinned: true,
   },
   {
     id: 2,
-    title: 'Libur Idul Adha 1446 H',
-    body: 'Sekolah diliburkan pada tanggal 6–7 Juni 2025 dalam rangka Hari Raya Idul Adha 1446 H. Kegiatan belajar mengajar kembali normal pada tanggal 9 Juni 2025.',
+    title: 'Libur Idul Fitri 1447 H',
+    body: 'Sekolah diliburkan pada tanggal 19 Maret 2026 dalam rangka Hari Raya Idul Fitri 1447 H. Kegiatan belajar mengajar kembali normal pada tanggal 30 Maret 2026.',
     date: new Date(Date.now() - 86400000).toISOString(),
     pinned: false,
   },
