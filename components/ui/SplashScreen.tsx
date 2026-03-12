@@ -46,11 +46,12 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
         .sp-cta {
           position: relative;
           z-index: 2;
-          width: 110%;
-          margin-left: -5%;
+          width: 100%;
+          margin-left: 0;
           flex-shrink: 0;
           background: var(--yellow, #F5A800);
-          border-radius: 44% 44% 0 0 / 18% 18% 0 0;
+          border-radius: 0;
+          margin-top: 0;
           padding: clamp(24px, 5.5vh, 44px) 12% clamp(32px, 7vh, 56px);
           display: flex;
           flex-direction: column;
@@ -132,7 +133,7 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
         }
         @media (min-width: 768px) {
           .sp-mascot-img { max-height: min(76vh, 760px) !important; }
-          .sp-cta { border-radius: 38% 38% 0 0 / 14% 14% 0 0; }
+          .sp-cta { border-radius: 0; }
         }
       `}</style>
 
@@ -142,7 +143,7 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
           position: 'fixed', inset: 0, zIndex: 9999,
           display: 'flex', flexDirection: 'column', alignItems: 'center',
           height: '100dvh', overflow: 'hidden',
-          background: 'linear-gradient(170deg, #f5f5f5 0%, #eaeaea 100%)',
+          background: '#EFEFEF',
         }}
       >
         {/* Dekorasi lingkaran */}
@@ -257,6 +258,7 @@ export function SplashScreen({ logos, onStart }: SplashScreenProps) {
               display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
               width: '100%',
               paddingTop: 'clamp(6px, 1.5vh, 16px)',
+              paddingBottom: 'clamp(20px, 4vh, 40px)',
             }}
           >
             {logos['mascot'] ? (
